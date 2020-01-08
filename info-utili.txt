@@ -1,0 +1,5 @@
+############### LEZIONE ###############
+
+MySQL DAYOFWEEK() returns the week day number (1 for Sunday,2 for Monday …… 7 for Saturday ) for a date specified as argument.
+
+SELECT DAYOFWEEK('2008-05-15');
