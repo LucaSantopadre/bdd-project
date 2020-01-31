@@ -90,6 +90,20 @@ CREATE PROCEDURE `temp-test`.corso_elimina(IN nome CHAR(30), IN piscina VARCHAR(
 	WHERE Nome_C = nome AND Nome_Piscina = piscina;
 
 
+############# LEZIONE
+CREATE PROCEDURE `temp-test`.corso_inserisci_lezione(IN giorno INT, IN dalle TIME, IN alle TIME, IN corso VARCHAR(30), IN piscina VARCHAR(50))
+	INSERT INTO `temp-test`.Lezione VALUES(giorno, dalle, alle, corso, piscina);
+
+
+CREATE PROCEDURE `temp-test`.corso_modifica_lezione(IN giorno INT, IN old_dalle TIME, IN old_alle TIME, IN corso VARCHAR(30), IN piscina VARCHAR(50), IN new_dalle TIME, IN new_alle TIME)
+	UPDATE `temp-test`.Lezione
+	SET Ora_dalle = new_dalle,
+		Ora_alle = new_alle
+	WHERE (Giorno_sett,Ora_dalle,Ora_alle,Nome_Corso,Nome_Piscina_Corso) = (giorno,old_dalle,ora_alle,corso,piscina);
+
+CREATE PROCEDURE `temp-test`.corso_elimina_lezione(IN giorno INT, IN dalle TIME, IN alle TIME, IN corso VARCHAR(30), IN piscina VARCHAR(50))
+	DELETE FROM  `temp-test`.Lezione
+	WHERE (Giorno_sett,Ora_dalle,Ora_alle,Nome_Corso,Nome_Piscina_Corso) = (giorno,dalle,alle,corso,piscina);
 
 
 

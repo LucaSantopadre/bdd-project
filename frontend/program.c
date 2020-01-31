@@ -3,6 +3,9 @@
 #include <string.h>
 #include <mysql/mysql.h>
 #include <unistd.h>
+
+#include "defines.h"
+
 #define fflush(stdin) while ((getchar()) != '\n')
 #define true 1
 #define false 0
@@ -11,7 +14,6 @@ MYSQL *conn;
 MYSQL *login;
 char u[255];
 char p[255];
-char query[255];
 char c;
 int cmd1 = 0;
 int cmd2 = 0;
@@ -19,88 +21,11 @@ int num_fields;
 MYSQL_RES *result;
 MYSQL_ROW row;
 MYSQL_FIELD *field;
-char CF_I[16];
+char CF_I[17];
 char NOME_PISCINA_ADDETTO[50];
+char query[255];
 
 
-
-// ************************ UTILS ******************************
-
-static void finish_with_error(MYSQL *con, char *err) {
-	fprintf(stderr, "%s error: %s\n", err, mysql_error(con));
-	mysql_close(con);
-	exit(1);
-}
-
-
-
-void input_wait() {
-	fflush(stdin);
-	char c;
-	printf("\nINFO: Premi invio per continuare: \n");
-	while (c = getchar() != '\n'){}
-}
-
-
-
-MYSQL_RES* get_result_from_sql_query(char *query){
-	printf("QUERY: %s \n",query);
-	mysql_query (conn,query);
-	result = mysql_store_result(conn);
-
-	if (result == NULL){
-		finish_with_error(conn, "errore");
-	}
-
-	MYSQL_RES *res;
-	res = result;
-	
-	mysql_free_result(result);
-	mysql_next_result(conn);
-	input_wait();
-	return res;
-}
-
-
-
-
-void print_sql_query(char *query){
-	printf("QUERY: %s \n",query);
-	mysql_query (conn,query);
-	result = mysql_store_result(conn);
-
-	if (result == NULL){
-		finish_with_error(conn, "errore");
-	}
-	num_fields = mysql_num_fields(result);
-	printf ("\n");
-	while ((row = mysql_fetch_row(result))){
-		for(int i = 0; i < num_fields; i++) {
-			if (i == 0) {
-				while(field = mysql_fetch_field(result)){ //include il nome della colonna nella stampa
-					printf( "| %s ", field->name);
-				}
-				printf ("\n");
-			}
-			printf(" %s ", row[i] ? row[i] : "NULL");
-		}
-	}
-	printf("\n");
-	mysql_free_result(result);
-	mysql_next_result(conn);
-	input_wait();
-}
-
-
-void run_sql_query (char *query) {
-	printf("QUERY: %s \n",query);
-	if(mysql_query(conn,query)) {
-		finish_with_error(conn, "Query");
-	} else {
-		printf ("INFO: Operazione completata.");
-		input_wait();
-	}
-}
 
 // ************************ INSEGNANTE ******************************
 
@@ -165,247 +90,9 @@ void insegnante_logged(){
 	} else printf("ERROR: Codice fiscale non valido\n");
 }
 
+
+
 // ************************ ADDETTO SEGRETERIA ******************************
-
-
-
-void persona_inserisci(){
-	char CF_P[17],indirizzo[50],nome[30];
-	printf ("\nCodice fiscale della persona: ");
-	scanf ("%s",CF_P);
-	fflush(stdin);
-	printf ("\nIndirizzo: ");
-	scanf ("%[^\n]",indirizzo);
-	fflush(stdin);
-	printf ("\nNome: ");
-	scanf ("%[^\n]",nome);
-	fflush(stdin);
-
-	snprintf(query, 1000, "\ncall persona_inserisci('%s','%s','%s')", CF_P, indirizzo, nome);
-	run_sql_query(query);
-
-	
-	printf("> Vuoi inserire i contatti (mail, cellulare, telefono)? s/n: ");
-	char choice;
-	scanf ("%c",&choice);
-	fflush(stdin);
-	if (choice == 's') {
-		char mail[30],cellulare[20],telefono[20];
-
-		printf ("\nMail: ");
-		scanf ("%[^\n]",mail);
-		fflush(stdin);
-		printf ("\nCellulare: ");
-		scanf ("%[^\n]",cellulare);
-		fflush(stdin);
-		printf ("\nTelefono: ");
-		scanf ("%[^\n]",telefono);
-
-		snprintf(query, 1000, "\ncall persona_inserisci_contatti('%s','%s','%s','%s')", 
-						CF_P, mail, cellulare, telefono);
-		run_sql_query(query);
-	} 
-}
-
-void persona_modifica(){
-	char CF_P[17],indirizzo[50],nome[30];
-	printf ("\nCodice fiscale della persona da modificare: ");
-	scanf ("%s",CF_P);
-	fflush(stdin);
-
-	printf ("\nNuovo indirizzo: ");
-	scanf ("%[^\n]",indirizzo);
-	fflush(stdin);
-	printf ("\nNuovo nome: ");
-	scanf ("%[^\n]",nome);
-	fflush(stdin);
-	
-	snprintf(query, 1000, "\ncall persona_modifica('%s','%s','%s')", CF_P, indirizzo, nome);
-	run_sql_query(query);
-
-	printf("> Vuoi modificare i contatti (mail, cellulare, telefono)? s/n: ");
-	char choice;
-	scanf ("%c",&choice);
-	fflush(stdin);
-	if (choice == 's') {
-		char mail[30],cellulare[20],telefono[20];
-
-		printf ("\nMail: ");
-		scanf ("%[^\n]",mail);
-		fflush(stdin);
-		printf ("\nCellulare: ");
-		scanf ("%[^\n]",cellulare);
-		fflush(stdin);
-		printf ("\nTelefono: ");
-		scanf ("%[^\n]",telefono);
-
-		snprintf(query, 1000, "\ncall persona_modifica_contatti('%s','%s','%s','%s')", 
-						CF_P, mail, cellulare, telefono);
-		run_sql_query(query);
-	} 
-}
-
-void persona_elimina(){
-	//TODO ON DELETE CASCADE?
-	char CF_P[17];
-	printf ("\nCodice fiscale della persona da eliminare: ");
-	scanf ("%s",CF_P);
-	fflush(stdin);
-	
-	snprintf(query, 1000, "\ncall persona_elimina('%s')", CF_P);
-	run_sql_query(query);
-}
-
-void persona_effettua_ingresso_libero(){
-	char CF_P[17],data_ingresso[11],nome_piscina[50];
-
-	printf ("\nCodice fiscale della persona: ");
-	scanf ("%s",CF_P);
-	fflush(stdin);
-
-	printf ("\nData ingresso : ");
-	scanf ("%[^\n]",data_ingresso);
-	fflush(stdin);
-
-
-	snprintf(query, 1000, "\ncall persona_effettua_ingresso_libero('%s','%s','%s')",
-					 CF_P, data_ingresso, NOME_PISCINA_ADDETTO);
-	run_sql_query(query);
-}
-
-void persona_inserisci_iscritta_corsi(){
-	char CF_P[17],medico[30],data_certificato[11],data_nascita[11];
-
-	printf ("\nCodice fiscale della persona: ");
-	scanf ("%s",CF_P);
-	fflush(stdin);
-
-	printf ("\nMedico che ha redatto il certificato: ");
-	scanf ("%[^\n]",medico);
-	fflush(stdin);
-	printf ("\nData certificato medico: ");
-	scanf ("%[^\n]",data_certificato);
-	fflush(stdin);
-	printf ("\nData di nascita: ");
-	scanf ("%[^\n]",data_nascita);
-
-
-	snprintf(query, 1000, "\ncall persona_inserisci_iscritta_corsi('%s','%s','%s','%s')",
-					 CF_P, medico, data_certificato, data_nascita);
-	run_sql_query(query);
-
-}
-
-void persona_modifica_iscritta_corsi(){
-	char CF_P[17],medico[30],data_certificato[11],data_nascita[11];
-
-	printf ("\nCodice fiscale della persona iscritta ai corsi da modificare: ");
-	scanf ("%s",CF_P);
-	fflush(stdin);
-
-	printf ("\nNuovo medico che ha redatto il certificato : ");
-	scanf ("%[^\n]",medico);
-	fflush(stdin);
-	printf ("\nNuova data certificato medico: ");
-	scanf ("%[^\n]",data_certificato);
-	fflush(stdin);
-	printf ("\nNuova data di nascita: ");
-	scanf ("%[^\n]",data_nascita);
-
-
-	snprintf(query, 1000, "\ncall persona_modifica_iscritta_corsi('%s','%s','%s','%s')",
-					 CF_P, medico, data_certificato, data_nascita);
-	run_sql_query(query);
-
-}
-
-void persona_elimina_iscritta_corsi(){
-	//TODO ON DELETE CASCADE?
-	char CF_P[17];
-	printf ("\nCodice fiscale della persona iscritta ai corsi da eliminare:  ");
-	scanf ("%s",CF_P);
-	fflush(stdin);
-	
-	snprintf(query, 1000, "\ncall persona_elimina('%s')", CF_P);
-	run_sql_query(query);
-}
-
-void persona_effettua_iscrizione_corso(){
-	char CF_P[17],corso[30];
-
-	printf ("\nCodice fiscale della persona: ");
-	scanf ("%s",CF_P);
-	fflush(stdin);
-
-	printf ("\nCorso esistente presso %s: ",NOME_PISCINA_ADDETTO);
-	scanf ("%[^\n]",corso);
-	fflush(stdin);
-
-
-	snprintf(query, 1000, "\ncall persona_effettua_iscrizione_corso('%s','%s','%s')",
-					 CF_P, corso, NOME_PISCINA_ADDETTO);
-	run_sql_query(query);
-}
-
-void persona_cancella_iscrizione_corso(){
-	//TODO ON DELETE CASCADE?
-	char CF_P[17],corso[30];
-	printf ("\nCodice fiscale della persona cui si vuole cancellare l'iscrizione:  ");
-	scanf ("%s",CF_P);
-	fflush(stdin);
-
-	printf ("\nCorso esistente per la quale si vuole cancellare l'iscrizione presso %s per la persona %s : ",NOME_PISCINA_ADDETTO, CF_P);
-	scanf ("%[^\n]",corso);
-	fflush(stdin);
-	
-	snprintf(query, 1000, "\ncall persona_cancella_iscrizione_corso('%s','%s','%s')", CF_P, corso, NOME_PISCINA_ADDETTO);
-	run_sql_query(query);
-}
-
-
-void corso_inserisci(){
-	char Nome_Corso[30];
-	float costo;
-	int massimo,minimo;
-
-	printf ("\nNome del corso: ");
-	scanf ("%s",Nome_Corso);
-	fflush(stdin);
-
-	printf ("\nCosto del corso: ");
-	scanf ("%f",&costo);
-	fflush(stdin);
-	printf ("\nNumero massimo di partecipanti: ");
-	scanf ("%i",&massimo);
-	fflush(stdin);
-	printf ("\nNumero minimo di partecipanti: ");
-	scanf ("%i",&minimo);
-
-
-	snprintf(query, 1000, "\ncall corso_inserisci('%s','%f','%i','%i')",
-					 Nome_Corso, costo, massimo, minimo);
-	run_sql_query(query);
-
-}
-
-
-
-
-int is_piscina_addetto_valid(char* piscina){
-	MYSQL_RES* res;
-	snprintf(query, 1000, "CALL is_piscina_addetto_valid('%s');",piscina);
-
-	res = get_result_from_sql_query(query);
-	row = mysql_fetch_row(res);
-	// verifico dal return di della procedure EXIST
-	// return 1: esiste la piscina
-	printf("RETURN: %s\n",row[0]);
-	if (strcmp(row[0], "1") == 0){ // se esiste la piscina...
-		return 1;
-	}
-	return 0;
-}
-
 
 void addetto_segreteria_logged(){
 	printf("\n######################################\n");
@@ -424,10 +111,12 @@ void addetto_segreteria_logged(){
 			printf("  1) Inserisci persona\n");
 			printf("  2) Modifica persona\n");
 			printf("  3) Elimina persona\n\n");
+
 			printf("  4) Effettua ingresso libero presso %s\n\n",NOME_PISCINA_ADDETTO);
-			printf("  5) Inserisci iscritto ai corsi presso %s\n",NOME_PISCINA_ADDETTO);
-			printf("  6) Modifica iscritto ai corsi presso %s\n",NOME_PISCINA_ADDETTO);
-			printf("  7) Elimina iscritto ai corsi presso %s\n\n",NOME_PISCINA_ADDETTO);
+
+			printf("  5) Inserisci certificato medico per corsi presso %s\n",NOME_PISCINA_ADDETTO);
+			printf("  6) Modifica certificato medico per corsi presso %s\n",NOME_PISCINA_ADDETTO);
+			printf("  7) Elimina certificato medico per corsi presso %s\n\n",NOME_PISCINA_ADDETTO);
 
 			printf("  8) Effettua iscrizione ad un corso presso %s\n",NOME_PISCINA_ADDETTO);
 			printf("  9) Cancella iscrizione ad un corso presso %s\n\n",NOME_PISCINA_ADDETTO);
@@ -437,12 +126,13 @@ void addetto_segreteria_logged(){
 			printf("  12) Elimina corso presso %s\n\n",NOME_PISCINA_ADDETTO);
 
 			printf("  13) Inserisci lezione di un corso presso %s\n",NOME_PISCINA_ADDETTO);
-			printf("  14) Modifica lezione di un corso presso %s\n",NOME_PISCINA_ADDETTO);
+			printf("  14) Modifica orario lezione di un corso presso %s\n",NOME_PISCINA_ADDETTO);
 			printf("  15) Elimina lezione di un corso presso %s\n\n",NOME_PISCINA_ADDETTO);
 
 			printf("  99) Termina\n\n");
 			printf("> Inserisci un Comando: ");
 			scanf ("%i",&cmd2);
+			fflush(stdin);
 
 			switch(cmd2){
 				case 1:
@@ -476,8 +166,19 @@ void addetto_segreteria_logged(){
 					corso_inserisci();
 					break;
 				case 11:
+					corso_modifica();
 					break;
 				case 12:
+					corso_elimina();
+					break;
+				case 13:
+					corso_inserisci_lezione();
+					break;
+				case 14:
+					corso_modifica_lezione();
+					break;
+				case 15:
+					corso_elimina_lezione();
 					break;
 
 
@@ -493,11 +194,92 @@ void addetto_segreteria_logged(){
 
 
 
-
 // ************************ ADDETTO COMUNALE ******************************
 
 void addetto_comunale_logged(){
-	printf("ADDETTO COMUNALE\n");
+	printf("\n######################################\n");
+	printf("INFO: Accesso eseguito come addetto comunale.\n\n");
+
+	while(true){
+		printf("\n#########################################################\n");
+		printf(" Lista funzioni eseguibili dall'utente addetto comunale :\n");
+		printf("##########################################################\n\n");
+		printf("  1) Inserisci piscina\n");
+		printf("  2) Modifica piscina\n");
+		printf("  3) Elimina piscina\n\n");
+
+		printf("  4) Inserisci insegnante\n");
+		printf("  5) Modifica insegnante\n");
+		printf("  6) Elimina insegnante\n\n");
+
+		printf("  7) Inserisci qualifica\n");
+		printf("  8) Modifica qualifica\n");
+		printf("  9) Elimina qualifica\n\n");
+
+		printf("  10) Assegna qualifica ad un insegnante\n");
+		printf("  11) Cancella qualifica ad un insegnante\n\n");
+
+		printf("  12) Inserisci rotazione insegnante\n");
+		printf("  13) Modifica rotazione insegnante\n");
+		printf("  14) Elimina rotazione insegnante\n\n");
+
+		printf("  99) Termina\n\n");
+		printf("> Inserisci un Comando: ");
+		scanf ("%i",&cmd2);
+		fflush(stdin);
+
+		switch(cmd2){
+			case 1:
+				piscina_inserisci();
+				break;
+			case 2:
+				piscina_modifica();
+				break;
+			case 3:
+				piscina_elimina();
+				break;
+			case 4:
+				insegnante_inserisci();
+				break;
+			case 5:
+				insegnante_modifica();
+				break;
+			case 6:
+				insegnante_elimina();
+				break;
+			case 7:
+				qualifica_inserisci();
+				break;
+			case 8:
+				qualifica_modifica();
+				break;
+			case 9:
+				qualifica_elimina();
+				break;
+			case 10:
+				insegnante_assegna_qualifica();
+				break;
+			case 11:
+				insegnante_cancella_qualifica();
+				break;
+			case 12:
+				rotazione_inserisci();
+				break;
+			case 13:
+				rotazione_modifica();
+				break;
+			case 14:
+				rotazione_elimina();
+				break;
+
+
+
+			case 99:
+				printf("\nINFO: Uscita...Bye\n");
+				exit(0);
+		}
+
+	}
 }
 
 
@@ -546,12 +328,13 @@ int main (int argc, char *argv[]) {
 		printf("  99) Termina\n\n");
 		printf("> Inserisci un Comando: ");
 		scanf ("%i",&cmd1);
+		fflush(stdin);
 		if (cmd1 == 1) {
 			login_f();
 		} else if (cmd1 == 99) {
 			printf("\nINFO: Uscita...Bye\n");
 			exit(0);
-		}
+		} 
 	}
 }
 

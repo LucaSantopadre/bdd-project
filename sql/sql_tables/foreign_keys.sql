@@ -8,7 +8,7 @@ ALTER TABLE `temp-test`.Rotazione ADD CONSTRAINT Rotazione_FK_1 FOREIGN KEY (Cod
 
 ALTER TABLE `temp-test`.Insegnante_Ha_Qualifica ADD CONSTRAINT Insegnante_Ha_Qualifica_FK FOREIGN KEY (CodFisc_Insegnante) REFERENCES `temp-test`.Insegnante(CodFisc_I);
 
-ALTER TABLE `temp-test`.Insegnante_Ha_Qualifica ADD CONSTRAINT Insegnante_Ha_Qualifica_FK_1 FOREIGN KEY (Nome_Qualifica) REFERENCES `temp-test`.Qualifica(Qualifica);
+ALTER TABLE `temp-test`.Insegnante_Ha_Qualifica ADD CONSTRAINT Insegnante_Ha_Qualifica_FK_1 FOREIGN KEY (Nome_Qualifica) REFERENCES `temp-test`.Qualifica(Nome_Q);
 
 ALTER TABLE `temp-test`.Persona ADD CONSTRAINT Persona_FK FOREIGN KEY (Nome_Piscina_P) REFERENCES `temp-test`.Piscina(Nome_P);
 

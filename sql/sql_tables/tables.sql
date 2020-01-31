@@ -70,8 +70,8 @@ CREATE TABLE `temp-test`.`Insegnante_Ha_Qualifica` (
 ####### QUALIFICA #########
 
 CREATE TABLE `temp-test`.`Qualifica` (
-  `Qualifica` VARCHAR(30) NOT NULL,
-  PRIMARY KEY (`Qualifica`));
+  `Nome_Q` VARCHAR(30) NOT NULL,
+  PRIMARY KEY (`Nome_Q`));
 
 
 
