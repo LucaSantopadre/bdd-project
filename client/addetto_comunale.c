@@ -100,6 +100,11 @@ void piscina_elimina(){
 	run_sql_query(query);
 }
 
+void piscina_visualizza_lista(){	
+	snprintf(query, 1000, "call piscina_visualizza_lista()");
+	print_sql_query(query);
+}
+
 
 void insegnante_inserisci(){
 	char CF_Ins[17],nome[30],telefono[20],cellulare[20];
@@ -150,6 +155,11 @@ void insegnante_elimina(){
 
 	snprintf(query, 1000, "call insegnante_elimina('%s')",CF_Ins);
 	run_sql_query(query);
+}
+
+void insegnante_visualizza_lista(){	
+	snprintf(query, 1000, "call insegnante_visualizza_lista()");
+	print_sql_query(query);
 }
 
 
@@ -284,4 +294,27 @@ void rotazione_elimina(){
 
 	snprintf(query, 1000, "call rotazione_elimina('%s','%s','%s','%s')",inizio,fine,CodFisc_I,piscina);
 	run_sql_query(query);
+}
+
+
+void rotazione_visualizza_lista_per_piscina(){
+	char piscina[50];
+
+	printf ("\nNome della piscina : ");
+	scanf ("%[^\n]",piscina);
+	fflush(stdin);
+
+	snprintf(query, 1000, "call rotazione_visualizza_lista_per_piscina('%s')",piscina);
+	print_sql_query(query);
+}
+
+void rotazione_visualizza_lista_per_insegnante(){
+	char CodFisc_I[17];
+
+	printf ("\nCodice fiscale dell'insegnante: ");
+	scanf ("%s",CodFisc_I);
+	fflush(stdin);
+
+	snprintf(query, 1000, "call rotazione_visualizza_lista_per_insegnante('%s')",CodFisc_I);
+	print_sql_query(query);
 }

@@ -1,0 +1,11 @@
+INSERT INTO `Piscine-Roma-DB`.`Piscina` (`Nome_P`,`Indirizzo_P`,`Telefono_P`,`Responsabile`,`Tipo`,`Da`,`a`) VALUES ("Piscina Delle Rose","viale America, 20","0592-193147","Sara De Simone","1","Maggio","Settembre");
+INSERT INTO `Piscine-Roma-DB`.`Piscina` (`Nome_P`,`Indirizzo_P`,`Telefono_P`,`Responsabile`,`Tipo`,`Da`,`a`) VALUES ("AquaTibur","via del frantoio, 8","0626-133997","Erika De Simone","0",NULL,NULL);
+INSERT INTO `Piscine-Roma-DB`.`Piscina` (`Nome_P`,`Indirizzo_P`,`Telefono_P`,`Responsabile`,`Tipo`,`Da`,`a`) VALUES ("Octopus Acquatic Club","via della Tenuta di Torrenova, 128","0761-239856","Giovanni Cattaneo","0",NULL,NULL);
+INSERT INTO `Piscine-Roma-DB`.`Piscina` (`Nome_P`,`Indirizzo_P`,`Telefono_P`,`Responsabile`,`Tipo`,`Da`,`a`) VALUES ("Olimpia 1","via Giuseppe Messina, 41","0328-876266","Dario Morelli","1","Giugno","Agosto");
+INSERT INTO `Piscine-Roma-DB`.`Piscina` (`Nome_P`,`Indirizzo_P`,`Telefono_P`,`Responsabile`,`Tipo`,`Da`,`a`) VALUES ("Crawl 2000","via del Gran Paradiso, 93","0974-862708","Nicolò Valente","0",NULL,NULL);
+INSERT INTO `Piscine-Roma-DB`.`Piscina` (`Nome_P`,`Indirizzo_P`,`Telefono_P`,`Responsabile`,`Tipo`,`Da`,`a`) VALUES ("Delta","via mazzantini, 15","0614-651436","Irene Battaglia","0",NULL,NULL);
+INSERT INTO `Piscine-Roma-DB`.`Piscina` (`Nome_P`,`Indirizzo_P`,`Telefono_P`,`Responsabile`,`Tipo`,`Da`,`a`) VALUES ("Juventus Nuoto","via bravetta, 539","0882-180032","Salvatore Sorrentino","0",NULL,NULL);
+INSERT INTO `Piscine-Roma-DB`.`Piscina` (`Nome_P`,`Indirizzo_P`,`Telefono_P`,`Responsabile`,`Tipo`,`Da`,`a`) VALUES ("Roma Uno","largo Ascianghi, 4","0671-113567","Christian Fusco","1","Giugno","Settembre");
+INSERT INTO `Piscine-Roma-DB`.`Piscina` (`Nome_P`,`Indirizzo_P`,`Telefono_P`,`Responsabile`,`Tipo`,`Da`,`a`) VALUES ("CSI Roma Est","via montona, 17","0558-539154","Giorgia Monti","0",NULL,NULL);
+INSERT INTO `Piscine-Roma-DB`.`Piscina` (`Nome_P`,`Indirizzo_P`,`Telefono_P`,`Responsabile`,`Tipo`,`Da`,`a`) VALUES ("Azzurra","via manduria, 21","0955-073831","Jessica Pace","1","Maggio","Agosto");
+INSERT INTO `Piscine-Roma-DB`.`Piscina` (`Nome_P`,`Indirizzo_P`,`Telefono_P`,`Responsabile`,`Tipo`,`Da`,`a`) VALUES ("Roma 12","via dei pini, 1","0179-387008","Michele Marra","0",NULL,NULL);

@@ -1,0 +1,15 @@
+INSERT INTO `Piscine-Roma-DB`.`Contatti` (`CodFisc_Persona_P`,`Mail_Persona`,`Cellulare_Persona`,`Telefono_Persona`) VALUES ("IVAGEV54J45K421Y","ante@ettristiquepellentesque.net","377-3480848","0344-843707");
+INSERT INTO `Piscine-Roma-DB`.`Contatti` (`CodFisc_Persona_P`,`Mail_Persona`,`Cellulare_Persona`,`Telefono_Persona`) VALUES ("JRBKMN51D23S875J","fringilla.porttitor@metus.ca","398-2947253","0326-168030");
+INSERT INTO `Piscine-Roma-DB`.`Contatti` (`CodFisc_Persona_P`,`Mail_Persona`,`Cellulare_Persona`,`Telefono_Persona`) VALUES ("NFFJRG51G15X437V","diam.lorem.auctor@ametluctus.co.uk","388-1591651","0878-514683");
+INSERT INTO `Piscine-Roma-DB`.`Contatti` (`CodFisc_Persona_P`,`Mail_Persona`,`Cellulare_Persona`,`Telefono_Persona`) VALUES ("OYHNUC61N78P638T","Donec@Donec.co.uk","343-5588814","0251-225369");
+INSERT INTO `Piscine-Roma-DB`.`Contatti` (`CodFisc_Persona_P`,`Mail_Persona`,`Cellulare_Persona`,`Telefono_Persona`) VALUES ("QPWLCB96X48O615D","Aliquam.gravida.mauris@Aliquamornare.net","372-9419490","0252-710981");
+INSERT INTO `Piscine-Roma-DB`.`Contatti` (`CodFisc_Persona_P`,`Mail_Persona`,`Cellulare_Persona`,`Telefono_Persona`) VALUES ("LYGTVF49G59H298G","euismod.est.arcu@venenatisvel.com","394-6473894","0291-402167");
+INSERT INTO `Piscine-Roma-DB`.`Contatti` (`CodFisc_Persona_P`,`Mail_Persona`,`Cellulare_Persona`,`Telefono_Persona`) VALUES ("IXTUIY19O35Y472J","vitae@rutrum.org","342-8309620","0389-138040");
+INSERT INTO `Piscine-Roma-DB`.`Contatti` (`CodFisc_Persona_P`,`Mail_Persona`,`Cellulare_Persona`,`Telefono_Persona`) VALUES ("GJHOPO67K52J454K","id.ante.Nunc@Nuncullamcorper.com","335-9583196","0766-668956");
+INSERT INTO `Piscine-Roma-DB`.`Contatti` (`CodFisc_Persona_P`,`Mail_Persona`,`Cellulare_Persona`,`Telefono_Persona`) VALUES ("LXPPNS32M56U463F","Ut.semper@condimentumDonecat.ca","359-4136641","0382-801899");
+INSERT INTO `Piscine-Roma-DB`.`Contatti` (`CodFisc_Persona_P`,`Mail_Persona`,`Cellulare_Persona`,`Telefono_Persona`) VALUES ("OYNSHY15I47R935V","nisi.nibh@ametrisus.com","335-3094095","0814-859572");
+INSERT INTO `Piscine-Roma-DB`.`Contatti` (`CodFisc_Persona_P`,`Mail_Persona`,`Cellulare_Persona`,`Telefono_Persona`) VALUES ("KPIESM18W54D778K","ipsum@nisimagna.co.uk","383-2827480","0729-228027");
+INSERT INTO `Piscine-Roma-DB`.`Contatti` (`CodFisc_Persona_P`,`Mail_Persona`,`Cellulare_Persona`,`Telefono_Persona`) VALUES ("MDJKPJ26N79R392N","imperdiet.ornare@eueratsemper.ca","325-5599679","0518-189359");
+INSERT INTO `Piscine-Roma-DB`.`Contatti` (`CodFisc_Persona_P`,`Mail_Persona`,`Cellulare_Persona`,`Telefono_Persona`) VALUES ("APLXTO83V31A695Q","mollis.dui.in@odio.com","329-0116606","0239-874667");
+INSERT INTO `Piscine-Roma-DB`.`Contatti` (`CodFisc_Persona_P`,`Mail_Persona`,`Cellulare_Persona`,`Telefono_Persona`) VALUES ("DJWKIH87G71J681X","purus.accumsan@ornare.net","384-6032065","0759-955090");
+INSERT INTO `Piscine-Roma-DB`.`Contatti` (`CodFisc_Persona_P`,`Mail_Persona`,`Cellulare_Persona`,`Telefono_Persona`) VALUES ("BEMJZF28C73G445W","aliquet.metus@tempusmauriserat.edu","366-6473004","0185-271430");

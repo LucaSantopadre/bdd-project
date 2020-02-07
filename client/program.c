@@ -128,7 +128,12 @@ void addetto_segreteria_logged(){
 			printf("  13) Inserisci lezione di un corso presso %s\n",NOME_PISCINA_ADDETTO);
 			printf("  14) Modifica orario lezione di un corso presso %s\n",NOME_PISCINA_ADDETTO);
 			printf("  15) Elimina lezione di un corso presso %s\n\n",NOME_PISCINA_ADDETTO);
+			
+			printf("  16) Visualizza lista corsi presso %s\n",NOME_PISCINA_ADDETTO);
+			printf("  17) Visualizza lista lezioni di un corso presso %s\n",NOME_PISCINA_ADDETTO);
+			printf("  18) Visualizza lista persone iscritte ad un corso presso %s\n\n",NOME_PISCINA_ADDETTO);
 
+			
 			printf("  99) Termina\n\n");
 			printf("> Inserisci un Comando: ");
 			scanf ("%i",&cmd2);
@@ -180,6 +185,15 @@ void addetto_segreteria_logged(){
 				case 15:
 					corso_elimina_lezione();
 					break;
+				case 16:
+					corso_visualizza_lista_per_piscina();
+					break;
+				case 17:
+					corso_visualizza_lista_lezioni();
+					break;
+				case 18:
+					corso_visualizza_lista_iscritti();
+					break;
 
 
 				case 99:
@@ -222,6 +236,13 @@ void addetto_comunale_logged(){
 		printf("  12) Inserisci rotazione insegnante\n");
 		printf("  13) Modifica rotazione insegnante\n");
 		printf("  14) Elimina rotazione insegnante\n\n");
+
+		printf("  15) Visualizza piscine\n");
+		printf("  16) Visualizza insegnanti\n");
+		printf("  17) Visualizza rotazioni presso una piscina\n");
+		printf("  18) Visualizza rotazioni assegnate ad un insegnante\n\n");
+
+
 
 		printf("  99) Termina\n\n");
 		printf("> Inserisci un Comando: ");
@@ -271,7 +292,18 @@ void addetto_comunale_logged(){
 			case 14:
 				rotazione_elimina();
 				break;
-
+			case 15:
+				piscina_visualizza_lista();
+				break;
+			case 16:
+				insegnante_visualizza_lista();
+				break;
+			case 17:
+				rotazione_visualizza_lista_per_piscina();
+				break;
+			case 18:
+				rotazione_visualizza_lista_per_insegnante();
+				break;
 
 
 			case 99:
@@ -294,7 +326,7 @@ void login_f () {
 	printf("\n\n");
 
 	conn = mysql_init (NULL);
-	login = mysql_real_connect(conn, "localhost",u,p, "temp-test", 3306, NULL, 0);
+	login = mysql_real_connect(conn, "localhost",u,p, "Piscine-Roma-DB", 3306, NULL, 0);
 
 	if (login == NULL) {
 		fprintf(stderr, "%s\n", mysql_error(conn));

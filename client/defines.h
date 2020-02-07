@@ -41,6 +41,9 @@ extern void corso_inserisci_lezione();
 extern void corso_modifica_lezione();
 extern void corso_elimina_lezione();
 extern int is_piscina_addetto_valid(char* piscina);
+extern void corso_visualizza_lista_per_piscina();
+extern void corso_visualizza_lista_lezioni();
+extern void corso_visualizza_lista_iscritti();
 
 // ADDETTO COMUNALE
 extern void piscina_inserisci();
@@ -57,6 +60,10 @@ extern void insegnante_cancella_qualifica();
 extern void rotazione_inserisci();
 extern void rotazione_modifica();
 extern void rotazione_elimina();
+extern void piscina_visualizza_lista();
+extern void insegnante_visualizza_lista();
+extern void rotazione_visualizza_lista_per_piscina();
+extern void rotazione_visualizza_lista_per_insegnante();
 
 
 

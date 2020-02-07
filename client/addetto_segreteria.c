@@ -191,7 +191,6 @@ void persona_effettua_iscrizione_corso(){
 }
 
 void persona_cancella_iscrizione_corso(){
-	//TODO ON DELETE CASCADE?
 	char CF_P[17],corso[30];
 	printf ("\nCodice fiscale della persona cui si vuole cancellare l'iscrizione:  ");
 	scanf ("%s",CF_P);
@@ -203,6 +202,17 @@ void persona_cancella_iscrizione_corso(){
 	
 	snprintf(query, 1000, "call persona_cancella_iscrizione_corso('%s','%s','%s')", CF_P, corso, NOME_PISCINA_ADDETTO);
 	run_sql_query(query);
+}
+
+void corso_visualizza_lista_iscritti(){
+	char corso[30];
+
+	printf ("\nCorso esistente presso %s  : ",NOME_PISCINA_ADDETTO);
+	scanf ("%[^\n]",corso);
+	fflush(stdin);
+	
+	snprintf(query, 1000, "call corso_visualizza_lista_iscritti('%s','%s')", corso, NOME_PISCINA_ADDETTO);
+	print_sql_query(query);
 }
 
 
@@ -267,6 +277,13 @@ void corso_elimina(){
 	snprintf(query, 1000, "call corso_elimina('%s',%s')",
 					 Nome_Corso, NOME_PISCINA_ADDETTO );
 	run_sql_query(query);
+}
+
+void corso_visualizza_lista_per_piscina(){
+
+	snprintf(query, 1000, "call corso_visualizza_lista_per_piscina('%s')",
+					  NOME_PISCINA_ADDETTO );
+	print_sql_query(query);
 }
 
 
@@ -347,6 +364,18 @@ void corso_elimina_lezione(){
 	snprintf(query, 1000, "call corso_elimina_lezione('%i','%s','%s','%s','%s')",
 					 giorno, dalle, alle, Nome_Corso, NOME_PISCINA_ADDETTO);
 	run_sql_query(query);
+}
+
+void corso_visualizza_lista_lezioni(){
+	char Nome_Corso[30];
+
+	printf ("\nNome del corso esistente presso %s: ",NOME_PISCINA_ADDETTO);
+	scanf ("%[^\n]",Nome_Corso);
+	fflush(stdin);
+
+	snprintf(query, 1000, "call corso_visualizza_lista_lezioni('%s','%s')",
+					  Nome_Corso,NOME_PISCINA_ADDETTO );
+	print_sql_query(query);
 }
 
 
