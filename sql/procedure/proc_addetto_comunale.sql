@@ -25,7 +25,7 @@ CREATE PROCEDURE `Piscine-Roma-DB`.piscina_visualizza_lista()
 
 ############### INSEGNANTE
 CREATE PROCEDURE `Piscine-Roma-DB`.insegnante_inserisci(IN CF_Ins CHAR(16), IN nome VARCHAR(50), IN telefono VARCHAR(20), IN cellulare VARCHAR(20))
-	INSERT INTO `Piscine-Roma-DB`.Insegnante VALUES(CF_Ins, nome, telefono, cellulare);
+	INSERT INTO `Piscine-Roma-DB`.Insegnante VALUES(CF_Ins, nome, telefono, cellulare,NULL);
 
 CREATE PROCEDURE `Piscine-Roma-DB`.insegnante_modifica(IN CF_Ins CHAR(16), IN nome VARCHAR(50), IN telefono VARCHAR(20), IN cellulare VARCHAR(20))
 	UPDATE `Piscine-Roma-DB`.Insegnante
@@ -94,4 +94,5 @@ CREATE PROCEDURE `Piscine-Roma-DB`.rotazione_visualizza_lista_per_insegnante(IN 
 	SELECT *
 	FROM `Piscine-Roma-DB`.Rotazione 
 	WHERE CodFiscale_Insegnante = CF_I;
+
 

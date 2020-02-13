@@ -121,4 +121,8 @@ CREATE PROCEDURE `Piscine-Roma-DB`.corso_visualizza_lista_lezioni(IN corso VARCH
 	WHERE (Nome_Corso,Nome_Piscina_Corso) = (corso,piscina);
 
 
+############## Utenti
+CREATE PROCEDURE `Piscine-Roma-DB`.`get_piscina_addetto_segreteria`(IN username_var VARCHAR(50))
+SELECT u.piscina FROM `Piscine-Roma-DB`.Utenti u
+				   WHERE u.username = username_var;
 

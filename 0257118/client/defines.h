@@ -4,8 +4,6 @@
 
 extern MYSQL *conn;
 extern MYSQL *login;
-extern char u[255];
-extern char p[255];
 extern char c;
 extern int cmd1;
 extern int cmd2;
@@ -13,16 +11,23 @@ extern int num_fields;
 extern MYSQL_RES *result;
 extern MYSQL_ROW row;
 extern MYSQL_FIELD *field;
-extern char CF_I[17];
-extern char NOME_PISCINA_ADDETTO[50];
+extern char *CF_I;
+extern char *NOME_PISCINA_ADDETTO;
 extern char query[255];
 
+
 // UTILITY
+extern int is_user_valid(char* username, char* password, char* ruolo);
 extern void finish_with_error();
 extern void input_wait();
 extern MYSQL_RES* get_result_from_sql_query(char *query);
 extern void print_sql_query(char *query);
 extern void run_sql_query (char *query);
+extern void utente_modifica_password(char* username);
+
+// AMMINISTRATORE UTENTI
+extern void utente_inserisci();
+extern void utente_elimina();
 
 // ADDETTO SEGRETERIA
 extern void persona_inserisci();
@@ -40,7 +45,6 @@ extern void corso_elimina();
 extern void corso_inserisci_lezione();
 extern void corso_modifica_lezione();
 extern void corso_elimina_lezione();
-extern int is_piscina_addetto_valid(char* piscina);
 extern void corso_visualizza_lista_per_piscina();
 extern void corso_visualizza_lista_lezioni();
 extern void corso_visualizza_lista_iscritti();

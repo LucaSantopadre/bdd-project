@@ -39,6 +39,7 @@ CREATE TABLE `Piscine-Roma-DB`.`Insegnante` (
   `Nome_I` VARCHAR(30) NOT NULL,
   `Telefono_I` VARCHAR(20) NULL,
   `Cellulare_I` VARCHAR(20) NULL,
+  `Username_ins` VARCHAR(50)  NULL,
   PRIMARY KEY (`CodFisc_I`));
 
 ###### INSEGNANTE HA QUALIFICA #######
@@ -92,6 +93,14 @@ CREATE TABLE `Piscine-Roma-DB`.`Iscrizione` (
   `Nome_Piscina_Corso_IS` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`CodFisc_Persona_IC_IS`, `Nome_Corso_IS`, `Nome_Piscina_Corso_IS`));
 
+####### UTENTI ########
+CREATE TABLE `Piscine-Roma-DB`.`Utenti` (
+  `username` VARCHAR(50) NOT NULL,
+  `passw` CHAR(32) NOT NULL,
+  `ruolo` ENUM('insegnante', 'addetto_segreteria', 'addetto_comunale') NOT NULL,
+  `piscina` VARCHAR(50)  NULL,
+  PRIMARY KEY (`username`));
+
 
 ################## FOREIGN KEYS ########################
 ALTER TABLE `Piscine-Roma-DB`.Corso ADD CONSTRAINT Corso_FK FOREIGN KEY (Nome_Piscina) REFERENCES `Piscine-Roma-DB`.Piscina(Nome_P)
@@ -126,4 +135,11 @@ ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `Piscine-Roma-DB`.Iscrizione ADD CONSTRAINT Iscrizione_FK_1 FOREIGN KEY (Nome_Corso_IS,Nome_Piscina_Corso_IS) REFERENCES `Piscine-Roma-DB`.Corso(Nome_C,Nome_Piscina)
 ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `Piscine-Roma-DB`.Insegnante ADD CONSTRAINT Insegnante_FK FOREIGN KEY (Username_ins) REFERENCES `Piscine-Roma-DB`.Utenti(username)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `Piscine-Roma-DB`.Utenti ADD CONSTRAINT Utenti_FK FOREIGN KEY (piscina) REFERENCES `Piscine-Roma-DB`.Piscina(Nome_P)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
 

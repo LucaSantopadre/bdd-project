@@ -1,3 +1,8 @@
+CREATE PROCEDURE `Piscine-Roma-DB`.`get_CF_insegnante_from_username`(IN username_var VARCHAR(50))
+SELECT CodFisc_I FROM `Piscine-Roma-DB`.Insegnante i
+				   WHERE i.Username_ins = username_var;
+				   
+
 DELIMITER $$
 
 CREATE PROCEDURE `Piscine-Roma-DB`.`report_insegnante`(startDate DATE, giorni INT, CF_I CHAR(16))

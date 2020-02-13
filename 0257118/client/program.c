@@ -12,8 +12,7 @@
 
 MYSQL *conn;
 MYSQL *login;
-char u[255];
-char p[255];
+
 char c;
 int cmd1 = 0;
 int cmd2 = 0;
@@ -21,197 +20,204 @@ int num_fields;
 MYSQL_RES *result;
 MYSQL_ROW row;
 MYSQL_FIELD *field;
-char CF_I[17];
-char NOME_PISCINA_ADDETTO[50];
+char *CF_I;
+char *NOME_PISCINA_ADDETTO;
 char query[255];
 
 
 
 // ************************ INSEGNANTE ******************************
 
-int is_CF_insegnante_valid(char* CodFisc_I){
+void get_CF_insegnante_from_username(char* username){
 	MYSQL_RES* res;
-	snprintf(query, 1000, "CALL is_CF_insegnante_valid('%s');",CodFisc_I);
+	snprintf(query, 1000, "CALL get_CF_insegnante_from_username('%s');",username);
 
 	res = get_result_from_sql_query(query);
 	row = mysql_fetch_row(res);
-	// verifico dal return di della procedure EXIST
-	// return 1: esiste il codice fiscale insegnante
-	// return 0: il codice fiscale non corrisponde ad un insegnante
-	printf("RETURN: %s\n",row[0]);
-	if (strcmp(row[0], "1") == 0){ // se esiste il codice fiscale...
-		return 1;
+
+	if(row[0] != NULL){
+		CF_I = row[0];
+	} else {
+		printf("ERROR: Attenzione codice fiscale insegnante non trovato!\n");
+		exit(1);
 	}
-	return 0;
 }
 
+void insegnante_logged(char* username){
 
+	get_CF_insegnante_from_username(username);
+	printf("INFO: Accesso eseguito per l'insegnante %s\n",CF_I);
 
-void insegnante_logged(){
-	printf("\n######################################\n");
-	printf("INFO: Accesso eseguito come insegnante.\n\n");
-	printf("> Inserisci il tuo codice fiscale per continuare: ");
-	scanf ("%s",CF_I);
-	printf("\n");
+	while(true){
+		printf("\n##################################################\n");
+		printf(" Lista funzioni eseguibili dall'utente insegnante %s:\n",CF_I);
+		printf("##################################################\n\n");
+		printf("  1) Esegui report di lavoro settimanale (7  giorni dalla data inserita)\n");
+		printf("  2) Esegui report di lavoro mensile     (31 giorni dalla data inserita)\n");
+		printf("  3) Modifica la tua password\n");
+		printf("  99) Termina\n\n");
+		printf("> Inserisci un Comando: ");
+		scanf ("%i",&cmd2);
 
-	if(is_CF_insegnante_valid(CF_I)){
-		printf("INFO: Accesso eseguito per l'insegnante %s\n",CF_I);
+		char inizio[11];
 
-		while(true){
-			printf("\n##################################################\n");
-			printf(" Lista funzioni eseguibili dall'utente insegnante %s:\n",CF_I);
-			printf("##################################################\n\n");
-			printf("  1) Esegui report di lavoro settimanale (7  giorni dalla data inserita)\n");
-			printf("  2) Esegui report di lavoro mensile     (31 giorni dalla data inserita)\n");
-			printf("  99) Termina\n\n");
-			printf("> Inserisci un Comando: ");
-			scanf ("%i",&cmd2);
+		if(cmd2 == 1){
+			printf("\n> Inserisci la data di inizio del report settimanale [AAAA-MM-GG]: ");
+			scanf ("%s",inizio);
+			snprintf(query, 1000, "call report_insegnante('%s','%d','%s');",inizio,7,CF_I);
+			print_sql_query(query);
 
-			char inizio[11];
+		}else if(cmd2 == 2){
+			printf("\n> Inserisci la data di inizio del report mensile [AAAA-MM-GG]: ");
+			scanf ("%s",inizio);
+			snprintf(query, 1000, "call report_insegnante('%s','%d','%s');",inizio,31,CF_I);
+			print_sql_query(query);
 
-			if(cmd2 == 1){
-				printf("\n> Inserisci la data di inizio del report settimanale [AAAA-MM-GG]: ");
-				scanf ("%s",inizio);
-				snprintf(query, 1000, "call report_insegnante('%s','%d','%s');",inizio,7,CF_I);
-				print_sql_query(query);
+		}else if(cmd2 == 3){
+			utente_modifica_password(username);
 
-			}else if(cmd2 == 2){
-				printf("\n> Inserisci la data di inizio del report mensile [AAAA-MM-GG]: ");
-				scanf ("%s",inizio);
-				snprintf(query, 1000, "call report_insegnante('%s','%d','%s');",inizio,31,CF_I);
-				print_sql_query(query);
-
-			}else if(cmd2 == 99){
-				printf("\nINFO: Uscita...Bye\n");
-				break;
-			}
-
+		}else if(cmd2 == 99){
+			printf("\nINFO: Uscita...Bye\n");
+			break;
 		}
-	} else printf("ERROR: Codice fiscale non valido\n");
+
+	}
+
 }
 
 
 
 // ************************ ADDETTO SEGRETERIA ******************************
+void get_piscina_addetto_segreteria(char* username){
+	MYSQL_RES* res;
+	snprintf(query, 1000, "CALL get_piscina_addetto_segreteria('%s');",username);
 
-void addetto_segreteria_logged(){
-	printf("\n######################################\n");
-	printf("INFO: Accesso eseguito come addetto segreteria.\n\n");
-	printf("> Inserisci il nome della piscina presso cui lavori: ");
-	scanf ("%s",NOME_PISCINA_ADDETTO);
-	printf("\n");
+	res = get_result_from_sql_query(query);
+	row = mysql_fetch_row(res);
 
-	if(is_piscina_addetto_valid(NOME_PISCINA_ADDETTO)){
-		printf("INFO: Accesso eseguito per l'addetto alla segreteria, presso %s\n",NOME_PISCINA_ADDETTO);
+	if(row[0] != NULL){
+		NOME_PISCINA_ADDETTO = row[0];
+	} else {
+		printf("ERROR: Attenzione piscina non trovata per l'addetto alla segreteria!\n");
+		exit(1);
+	}
+}
 
-		while(true){
-			printf("\n#########################################################\n");
-			printf(" Lista funzioni eseguibili dall'utente addetto segreteria :\n");
-			printf("##########################################################\n\n");
-			printf("  1) Inserisci persona\n");
-			printf("  2) Modifica persona\n");
-			printf("  3) Elimina persona\n\n");
+void addetto_segreteria_logged(char* username){
 
-			printf("  4) Effettua ingresso libero presso %s\n\n",NOME_PISCINA_ADDETTO);
+	get_piscina_addetto_segreteria(username);
+	printf("INFO: Accesso eseguito per l'addetto alla segreteria, presso %s\n",NOME_PISCINA_ADDETTO);
 
-			printf("  5) Inserisci certificato medico per corsi presso %s\n",NOME_PISCINA_ADDETTO);
-			printf("  6) Modifica certificato medico per corsi presso %s\n",NOME_PISCINA_ADDETTO);
-			printf("  7) Elimina certificato medico per corsi presso %s\n\n",NOME_PISCINA_ADDETTO);
+	while(true){
+		printf("\n#########################################################\n");
+		printf(" Lista funzioni eseguibili dall'utente addetto segreteria :\n");
+		printf("##########################################################\n\n");
+		printf("  1) Inserisci persona\n");
+		printf("  2) Modifica persona\n");
+		printf("  3) Elimina persona\n\n");
 
-			printf("  8) Effettua iscrizione ad un corso presso %s\n",NOME_PISCINA_ADDETTO);
-			printf("  9) Cancella iscrizione ad un corso presso %s\n\n",NOME_PISCINA_ADDETTO);
+		printf("  4) Effettua ingresso libero presso %s\n\n",NOME_PISCINA_ADDETTO);
 
-			printf("  10) Inserisci corso presso %s\n",NOME_PISCINA_ADDETTO);
-			printf("  11) Modifica corso presso %s\n",NOME_PISCINA_ADDETTO);
-			printf("  12) Elimina corso presso %s\n\n",NOME_PISCINA_ADDETTO);
+		printf("  5) Inserisci certificato medico per corsi presso %s\n",NOME_PISCINA_ADDETTO);
+		printf("  6) Modifica certificato medico per corsi presso %s\n",NOME_PISCINA_ADDETTO);
+		printf("  7) Elimina certificato medico per corsi presso %s\n\n",NOME_PISCINA_ADDETTO);
 
-			printf("  13) Inserisci lezione di un corso presso %s\n",NOME_PISCINA_ADDETTO);
-			printf("  14) Modifica orario lezione di un corso presso %s\n",NOME_PISCINA_ADDETTO);
-			printf("  15) Elimina lezione di un corso presso %s\n\n",NOME_PISCINA_ADDETTO);
-			
-			printf("  16) Visualizza lista corsi presso %s\n",NOME_PISCINA_ADDETTO);
-			printf("  17) Visualizza lista lezioni di un corso presso %s\n",NOME_PISCINA_ADDETTO);
-			printf("  18) Visualizza lista persone iscritte ad un corso presso %s\n\n",NOME_PISCINA_ADDETTO);
+		printf("  8) Effettua iscrizione ad un corso presso %s\n",NOME_PISCINA_ADDETTO);
+		printf("  9) Cancella iscrizione ad un corso presso %s\n\n",NOME_PISCINA_ADDETTO);
 
-			
-			printf("  99) Termina\n\n");
-			printf("> Inserisci un Comando: ");
-			scanf ("%i",&cmd2);
-			fflush(stdin);
+		printf("  10) Inserisci corso presso %s\n",NOME_PISCINA_ADDETTO);
+		printf("  11) Modifica corso presso %s\n",NOME_PISCINA_ADDETTO);
+		printf("  12) Elimina corso presso %s\n\n",NOME_PISCINA_ADDETTO);
 
-			switch(cmd2){
-				case 1:
-					persona_inserisci();
-					break;
-				case 2:
-					persona_modifica();
-					break;
-				case 3:
-					persona_elimina();
-					break;
-				case 4:
-					persona_effettua_ingresso_libero();
-					break;
-				case 5:
-					persona_inserisci_iscritta_corsi();
-					break;
-				case 6:
-					persona_modifica_iscritta_corsi();
-					break;
-				case 7:
-					persona_elimina_iscritta_corsi();
-					break;
-				case 8:
-					persona_effettua_iscrizione_corso();
-					break;
-				case 9:
-					persona_cancella_iscrizione_corso();
-					break;
-				case 10:
-					corso_inserisci();
-					break;
-				case 11:
-					corso_modifica();
-					break;
-				case 12:
-					corso_elimina();
-					break;
-				case 13:
-					corso_inserisci_lezione();
-					break;
-				case 14:
-					corso_modifica_lezione();
-					break;
-				case 15:
-					corso_elimina_lezione();
-					break;
-				case 16:
-					corso_visualizza_lista_per_piscina();
-					break;
-				case 17:
-					corso_visualizza_lista_lezioni();
-					break;
-				case 18:
-					corso_visualizza_lista_iscritti();
-					break;
-
-
-				case 99:
-					printf("\nINFO: Uscita...Bye\n");
-					exit(0);
-			}
-
-		}
+		printf("  13) Inserisci lezione di un corso presso %s\n",NOME_PISCINA_ADDETTO);
+		printf("  14) Modifica orario lezione di un corso presso %s\n",NOME_PISCINA_ADDETTO);
+		printf("  15) Elimina lezione di un corso presso %s\n\n",NOME_PISCINA_ADDETTO);
 		
-	}else printf("ERROR: Nome piscina non valido\n");
+		printf("  16) Visualizza lista corsi presso %s\n",NOME_PISCINA_ADDETTO);
+		printf("  17) Visualizza lista lezioni di un corso presso %s\n",NOME_PISCINA_ADDETTO);
+		printf("  18) Visualizza lista persone iscritte ad un corso presso %s\n\n",NOME_PISCINA_ADDETTO);
+
+		printf("  19) Modifica la tua password \n\n");
+
+		
+		printf("  99) Termina\n\n");
+		printf("> Inserisci un Comando: ");
+		scanf ("%i",&cmd2);
+		fflush(stdin);
+
+		switch(cmd2){
+			case 1:
+				persona_inserisci();
+				break;
+			case 2:
+				persona_modifica();
+				break;
+			case 3:
+				persona_elimina();
+				break;
+			case 4:
+				persona_effettua_ingresso_libero();
+				break;
+			case 5:
+				persona_inserisci_iscritta_corsi();
+				break;
+			case 6:
+				persona_modifica_iscritta_corsi();
+				break;
+			case 7:
+				persona_elimina_iscritta_corsi();
+				break;
+			case 8:
+				persona_effettua_iscrizione_corso();
+				break;
+			case 9:
+				persona_cancella_iscrizione_corso();
+				break;
+			case 10:
+				corso_inserisci();
+				break;
+			case 11:
+				corso_modifica();
+				break;
+			case 12:
+				corso_elimina();
+				break;
+			case 13:
+				corso_inserisci_lezione();
+				break;
+			case 14:
+				corso_modifica_lezione();
+				break;
+			case 15:
+				corso_elimina_lezione();
+				break;
+			case 16:
+				corso_visualizza_lista_per_piscina();
+				break;
+			case 17:
+				corso_visualizza_lista_lezioni();
+				break;
+			case 18:
+				corso_visualizza_lista_iscritti();
+				break;
+			case 19:
+				utente_modifica_password(username);
+				break;
+
+
+			case 99:
+				printf("\nINFO: Uscita...Bye\n");
+				exit(0);
+		}
+
+	}
 }
 
 
 
 // ************************ ADDETTO COMUNALE ******************************
 
-void addetto_comunale_logged(){
-	printf("\n######################################\n");
+void addetto_comunale_logged(char* username){
 	printf("INFO: Accesso eseguito come addetto comunale.\n\n");
 
 	while(true){
@@ -241,6 +247,8 @@ void addetto_comunale_logged(){
 		printf("  16) Visualizza insegnanti\n");
 		printf("  17) Visualizza rotazioni presso una piscina\n");
 		printf("  18) Visualizza rotazioni assegnate ad un insegnante\n\n");
+
+		printf("  19) Modifica la tua password \n\n");
 
 
 
@@ -304,6 +312,9 @@ void addetto_comunale_logged(){
 			case 18:
 				rotazione_visualizza_lista_per_insegnante();
 				break;
+			case 19:
+				utente_modifica_password(username);
+				break;
 
 
 			case 99:
@@ -315,40 +326,113 @@ void addetto_comunale_logged(){
 }
 
 
+// ************************ AMMINISTRATORE UTENTI ******************************
+
+void amministratore_utenti_logged(){
+	printf("INFO: Accesso eseguito come amministratore utenti.\n\n");
+
+	while(true){
+		printf("\n#########################################################\n");
+		printf(" Lista funzioni eseguibili dall'utente amministratore utenti :\n");
+		printf("##########################################################\n\n");
+		printf("  1) Inserisci nuovo utente del sistema\n");
+		printf("  2) Elimina utente\n");
+
+		printf("  99) Termina\n\n");
+		printf("> Inserisci un Comando: ");
+		scanf ("%i",&cmd2);
+		fflush(stdin);
+
+		switch(cmd2){
+			case 1:
+				utente_inserisci();
+				break;
+			case 2:
+				utente_elimina();
+				break;
+
+			case 99:
+				printf("\nINFO: Uscita...Bye\n");
+				exit(0);
+		}
+
+	}
+}
+
+
+
+
+
+
+
+
 // ************************ LOGIN ******************************
 
 void login_f () {
+	char u[255];
+	char p[255];
+
 	printf("\n########### Login ###########\n\n");
+	printf("Con quale ruolo sei registrato?\n");
+	printf("  1) Insegnante\n");
+	printf("  2) Addetto segreteria\n");
+	printf("  3) Addetto comunale\n\n");
+	printf("> ");
+	scanf ("%i",&cmd2);
+	fflush(stdin);
+
 	printf("> Inserisci l'username: ");
 	scanf("%s",u);
 	printf("> Inserisci la password: ");
 	scanf("%s",p);
 	printf("\n\n");
 
+	
+	char* ruolo;
+	char* password;
+
+	switch(cmd2){
+			case 1:
+				ruolo = "insegnante";
+				password = "insegnante123";				
+				break;
+			case 2:
+				ruolo = "addetto_segreteria";
+				password = "asegreteria123";
+				break;
+			case 3:
+				ruolo = "addetto_comunale";
+				password = "acomunale123";
+				break;
+	}	
+
 	conn = mysql_init (NULL);
-	login = mysql_real_connect(conn, "localhost",u,p, "Piscine-Roma-DB", 3306, NULL, 0);
+	login = mysql_real_connect(conn, "localhost",ruolo,password, "Piscine-Roma-DB", 3306, NULL, 0);
 
 	if (login == NULL) {
 		fprintf(stderr, "%s\n", mysql_error(conn));
 		mysql_close(conn);
 		exit(1);
 	} else {
-		printf ("\nINFO: Connessione riuscita\n");
 
-		if (strcmp(u, "insegnante") == 0) {
-			insegnante_logged();
+		if(is_user_valid(u,p,ruolo) == 1){
+			switch(cmd2){
+				case 1:
+					insegnante_logged(u);
+					break;
+				case 2:
+					addetto_segreteria_logged(u);
+					break;
+				case 3:
+					addetto_comunale_logged(u);
+					break;
+			}
 
-		} else if (strcmp(u, "addetto_segreteria") == 0) {
-			addetto_segreteria_logged();
-
-		} else if (strcmp(u, "addetto_comunale") == 0) {
-			addetto_comunale_logged();
+		} else{
+			printf("ERROR: Nome utente o password errata per il ruolo selezionato.\n");
+			mysql_close(conn);
 		}
-
 	}
-
-	mysql_close(conn);
-	exit(0);
 }
 
 
@@ -357,13 +441,35 @@ int main (int argc, char *argv[]) {
 	while (1) {
 		printf("################### Gestione piscine comunali di Roma ###################\n\n");
 		printf("  1) Login\n");
+		printf("  2) Crea o elimina utenti\n");
 		printf("  99) Termina\n\n");
 		printf("> Inserisci un Comando: ");
 		scanf ("%i",&cmd1);
 		fflush(stdin);
 		if (cmd1 == 1) {
 			login_f();
-		} else if (cmd1 == 99) {
+		} else if (cmd1 == 2) {
+			char user[255];
+			char passw[255];
+
+			printf("> Inserisci l'username per l'amministratore utenti: ");
+			scanf("%s",user);
+			printf("> Inserisci la password: ");
+			scanf("%s",passw);
+			printf("\n\n");
+
+			conn = mysql_init (NULL);
+			login = mysql_real_connect(conn, "localhost",user,passw, "Piscine-Roma-DB", 3306, NULL, 0);
+
+			if (login == NULL) {
+				fprintf(stderr, "%s\n", mysql_error(conn));
+				mysql_close(conn);
+				exit(1);
+			} else {
+				amministratore_utenti_logged();
+			}
+			
+		}else if (cmd1 == 99) {
 			printf("\nINFO: Uscita...Bye\n");
 			exit(0);
 		} 

@@ -176,5 +176,27 @@ CREATE TRIGGER `Piscine-Roma-DB`.check_update_date_rotazione BEFORE UPDATE ON `P
     END $$
 
 
+CREATE TRIGGER `Piscine-Roma-DB`.check_insert_piscina_addetto_segreteria_null BEFORE INSERT ON `Piscine-Roma-DB`.Utenti
+     FOR EACH ROW
+     BEGIN
+            IF ( NEW.ruolo = 'addetto_segreteria' AND NEW.piscina IS NULL  )
+                THEN
+                SET NEW.ruolo = NULL;
+                SET NEW.piscina = NULL;
+                SIGNAL SQLSTATE '02000' SET MESSAGE_TEXT = 'Attenzione il nome della piscina per utente addetto_segreteria è obbligatoria';
+            END IF;
+    END $$
+
+CREATE TRIGGER `Piscine-Roma-DB`.check_update_piscina_addetto_segreteria_null BEFORE UPDATE ON `Piscine-Roma-DB`.Utenti
+     FOR EACH ROW
+     BEGIN
+            IF ( NEW.ruolo = 'addetto_segreteria' AND NEW.piscina IS NULL  )
+                THEN
+                SET NEW.ruolo = NULL;
+                SET NEW.piscina = NULL;
+                SIGNAL SQLSTATE '02000' SET MESSAGE_TEXT = 'Attenzione il nome della piscina per utente addetto_segreteria è obbligatoria';
+            END IF;
+    END $$
+
 DELIMITER;
 

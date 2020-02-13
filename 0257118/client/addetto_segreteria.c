@@ -87,7 +87,6 @@ void persona_modifica(){
 }
 
 void persona_elimina(){
-	//TODO ON DELETE CASCADE?
 	char CF_P[17];
 	printf ("\nCodice fiscale della persona da eliminare: ");
 	scanf ("%s",CF_P);
@@ -163,7 +162,6 @@ void persona_modifica_iscritta_corsi(){
 }
 
 void persona_elimina_iscritta_corsi(){
-	//TODO ON DELETE CASCADE?
 	char CF_P[17];
 	printf ("\nCodice fiscale della persona iscritta ai corsi da eliminare:  ");
 	scanf ("%s",CF_P);
@@ -379,17 +377,12 @@ void corso_visualizza_lista_lezioni(){
 }
 
 
-int is_piscina_addetto_valid(char* piscina){
-	MYSQL_RES* res;
-	snprintf(query, 1000, "CALL is_piscina_addetto_valid('%s');",piscina);
 
-	res = get_result_from_sql_query(query);
-	row = mysql_fetch_row(res);
-	// verifico dal return di della procedure EXIST
-	// return 1: esiste la piscina
-	printf("RETURN: %s\n",row[0]);
-	if (strcmp(row[0], "1") == 0){ // se esiste la piscina...
-		return 1;
-	}
-	return 0;
-}
+
+
+
+
+
+
+
+

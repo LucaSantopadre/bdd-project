@@ -1,8 +1,6 @@
-CREATE PROCEDURE `Piscine-Roma-DB`.`is_CF_insegnante_valid`(IN CF CHAR(16))
-	SELECT EXISTS( SELECT CodFisc_I FROM `Piscine-Roma-DB`.Insegnante i
-				   WHERE i.CodFisc_I = CF )  as is_valid_cf ;
-
-
-CREATE PROCEDURE `Piscine-Roma-DB`.`is_piscina_addetto_valid`(IN Nome_Piscina CHAR(16))
-	SELECT EXISTS( SELECT Nome_P FROM `Piscine-Roma-DB`.Piscina p
-				   WHERE p.Nome_P = Nome_Piscina )  as is_valid_nome_p ;
+CREATE PROCEDURE `Piscine-Roma-DB`.`is_user_valid`(IN username_var VARCHAR(50), IN passw_var VARCHAR(50), IN ruolo_var VARCHAR(50))
+SELECT EXISTS( 	SELECT * 
+				FROM `Piscine-Roma-DB`.Utenti u
+			   	WHERE u.username = username_var
+			   	AND u.passw = MD5(passw_var)  
+			   	AND u.ruolo = ruolo_var )  as is_user_valid ;

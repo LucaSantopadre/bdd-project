@@ -149,7 +149,7 @@ void insegnante_modifica(){
 void insegnante_elimina(){
 	char CF_Ins[17];
 
-	printf ("\nCodice fiscale dell'insegnante da modificare: ");
+	printf ("\nCodice fiscale dell'insegnante da eliminare: ");
 	scanf ("%s",CF_Ins);
 	fflush(stdin);
 
