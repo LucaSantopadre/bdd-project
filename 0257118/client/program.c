@@ -45,16 +45,14 @@ void get_CF_insegnante_from_username(char* username){
 
 void insegnante_logged(char* username){
 
-	get_CF_insegnante_from_username(username);
-	printf("INFO: Accesso eseguito per l'insegnante %s\n",CF_I);
-
 	while(true){
+		get_CF_insegnante_from_username(username);
 		printf("\n##################################################\n");
 		printf(" Lista funzioni eseguibili dall'utente insegnante %s:\n",CF_I);
 		printf("##################################################\n\n");
 		printf("  1) Esegui report di lavoro settimanale (7  giorni dalla data inserita)\n");
 		printf("  2) Esegui report di lavoro mensile     (31 giorni dalla data inserita)\n");
-		printf("  3) Modifica la tua password\n");
+		printf("  3) Modifica la tua password\n\n");
 		printf("  99) Termina\n\n");
 		printf("> Inserisci un Comando: ");
 		scanf ("%i",&cmd2);
@@ -64,13 +62,13 @@ void insegnante_logged(char* username){
 		if(cmd2 == 1){
 			printf("\n> Inserisci la data di inizio del report settimanale [AAAA-MM-GG]: ");
 			scanf ("%s",inizio);
-			snprintf(query, 1000, "call report_insegnante('%s','%d','%s');",inizio,7,CF_I);
+			snprintf(query, 1000, "call report_insegnante('%s','%d','%s');",inizio, 7, CF_I);
 			print_sql_query(query);
 
 		}else if(cmd2 == 2){
 			printf("\n> Inserisci la data di inizio del report mensile [AAAA-MM-GG]: ");
 			scanf ("%s",inizio);
-			snprintf(query, 1000, "call report_insegnante('%s','%d','%s');",inizio,31,CF_I);
+			snprintf(query, 1000, "call report_insegnante('%s','%d','%s');",inizio, 31, CF_I);
 			print_sql_query(query);
 
 		}else if(cmd2 == 3){
@@ -80,7 +78,6 @@ void insegnante_logged(char* username){
 			printf("\nINFO: Uscita...Bye\n");
 			break;
 		}
-
 	}
 
 }
@@ -105,10 +102,8 @@ void get_piscina_addetto_segreteria(char* username){
 
 void addetto_segreteria_logged(char* username){
 
-	get_piscina_addetto_segreteria(username);
-	printf("INFO: Accesso eseguito per l'addetto alla segreteria, presso %s\n",NOME_PISCINA_ADDETTO);
-
 	while(true){
+		get_piscina_addetto_segreteria(username);
 		printf("\n#########################################################\n");
 		printf(" Lista funzioni eseguibili dall'utente addetto segreteria :\n");
 		printf("##########################################################\n\n");
@@ -337,6 +332,7 @@ void amministratore_utenti_logged(){
 		printf("##########################################################\n\n");
 		printf("  1) Inserisci nuovo utente del sistema\n");
 		printf("  2) Elimina utente\n");
+		printf("  3) Visualizza lista utenti\n\n");
 
 		printf("  99) Termina\n\n");
 		printf("> Inserisci un Comando: ");
@@ -350,12 +346,14 @@ void amministratore_utenti_logged(){
 			case 2:
 				utente_elimina();
 				break;
+			case 3:
+				utenti_visualizza_lista();
+				break;
 
 			case 99:
 				printf("\nINFO: Uscita...Bye\n");
 				exit(0);
 		}
-
 	}
 }
 
@@ -373,10 +371,10 @@ void login_f () {
 	char p[255];
 
 	printf("\n########### Login ###########\n\n");
-	printf("Con quale ruolo sei registrato?\n");
-	printf("  1) Insegnante\n");
-	printf("  2) Addetto segreteria\n");
-	printf("  3) Addetto comunale\n\n");
+	printf("Seleziona il tipo di accesso?\n");
+	printf("  1) Accesso come insegnante\n");
+	printf("  2) Accesso come addetto segreteria\n");
+	printf("  3) Accesso come addetto comunale\n\n");
 	printf("> ");
 	scanf ("%i",&cmd2);
 	fflush(stdin);
@@ -407,7 +405,7 @@ void login_f () {
 	}	
 
 	conn = mysql_init (NULL);
-	login = mysql_real_connect(conn, "localhost",ruolo,password, "Piscine-Roma-DB", 3306, NULL, 0);
+	login = mysql_real_connect(conn, "localhost",ruolo, password, "Piscine-Roma-DB", 3306, NULL, 0);
 
 	if (login == NULL) {
 		fprintf(stderr, "%s\n", mysql_error(conn));
@@ -440,8 +438,8 @@ void login_f () {
 int main (int argc, char *argv[]) {
 	while (1) {
 		printf("################### Gestione piscine comunali di Roma ###################\n\n");
-		printf("  1) Login\n");
-		printf("  2) Crea o elimina utenti\n");
+		printf("  1) Login\n\n");
+		printf("  2) Gestione utenti\n\n");
 		printf("  99) Termina\n\n");
 		printf("> Inserisci un Comando: ");
 		scanf ("%i",&cmd1);

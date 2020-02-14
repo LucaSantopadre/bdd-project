@@ -55,7 +55,6 @@ MYSQL_RES* get_result_from_sql_query(char *query){
 	
 	mysql_free_result(result);
 	mysql_next_result(conn);
-	input_wait();
 	return res;
 }
 
@@ -84,6 +83,7 @@ void print_sql_query(char *query){
 		}
 	}
 	printf("\n");
+	fflush(stdin);
 	mysql_free_result(result);
 	mysql_next_result(conn);
 	input_wait();

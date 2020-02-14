@@ -174,6 +174,8 @@ void persona_elimina_iscritta_corsi(){
 void persona_effettua_iscrizione_corso(){
 	char CF_P[17],corso[30];
 
+	printf("\nINFO: La persona deve avere un certificato medico per essere iscritta ad un corso.\n");
+
 	printf ("\nCodice fiscale della persona: ");
 	scanf ("%s",CF_P);
 	fflush(stdin);

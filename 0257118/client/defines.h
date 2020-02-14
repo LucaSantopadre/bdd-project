@@ -11,7 +11,6 @@ extern int num_fields;
 extern MYSQL_RES *result;
 extern MYSQL_ROW row;
 extern MYSQL_FIELD *field;
-extern char *CF_I;
 extern char *NOME_PISCINA_ADDETTO;
 extern char query[255];
 
@@ -28,6 +27,7 @@ extern void utente_modifica_password(char* username);
 // AMMINISTRATORE UTENTI
 extern void utente_inserisci();
 extern void utente_elimina();
+extern void utenti_visualizza_lista();
 
 // ADDETTO SEGRETERIA
 extern void persona_inserisci();

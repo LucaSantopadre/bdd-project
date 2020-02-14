@@ -21,4 +21,8 @@ CREATE PROCEDURE `Piscine-Roma-DB`.insegnante_assegna_username(IN user_var VARCH
 	SET Username_ins = user_var
 		WHERE CodFisc_I = CF_I ;
 
+CREATE PROCEDURE `Piscine-Roma-DB`.utenti_visualizza_lista()
+	SELECT * 
+	FROM `Piscine-Roma-DB`.Utenti
+	ORDER BY ruolo;
 

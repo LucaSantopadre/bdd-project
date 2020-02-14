@@ -4,6 +4,7 @@ GRANT EXECUTE ON PROCEDURE  `Piscine-Roma-DB`.utente_inserisci_insegnante_addett
 GRANT EXECUTE ON PROCEDURE  `Piscine-Roma-DB`.utente_inserisci_addetto_segreteria TO 'amministratore_utenti'@'localhost';
 GRANT EXECUTE ON PROCEDURE  `Piscine-Roma-DB`.utente_elimina TO 'amministratore_utenti'@'localhost';
 GRANT EXECUTE ON PROCEDURE  `Piscine-Roma-DB`.insegnante_assegna_username TO 'amministratore_utenti'@'localhost';
+GRANT EXECUTE ON PROCEDURE  `Piscine-Roma-DB`.utenti_visualizza_lista TO 'amministratore_utenti'@'localhost';
 
 
 ########### INSEGNANTE #############

@@ -64,6 +64,12 @@ void utente_elimina(){
 }
 
 
+void utenti_visualizza_lista(){
+	
+	snprintf(query, 1000, "call utenti_visualizza_lista()");
+	print_sql_query(query);
+}
+
 
 
 
